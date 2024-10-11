@@ -16,13 +16,13 @@ class Gravity : PApplet() {
 
         const val HEIGHT = 600
 
-        const val NUM_BODIES = 50000
+        const val NUM_BODIES = 5000
 
         const val THETA = 0.5f  // Barnes-Hut approximation criteria
 
-        const val G = 6.67430e-2f  // Gravitational constant (scaled for visualization)
+        const val G = 6.6743e-1f  // Gravitational constant (scaled for visualization)
 
-        const val SOFTENING = 5f  // Prevents division by zero
+        const val SOFTENING = 3f  // Prevents division by zero
 
         private lateinit var bodies: Array<Body>
 
@@ -86,10 +86,11 @@ class Gravity : PApplet() {
     }
 
     private fun updateBodies(root: Node) {
-        bodies.forEach { body ->
-            val force = calculateForce(body, root)
-            body.vel.add(PVector.mult(force, 1f / body.mass))
-            body.pos.add(body.vel)
+        bodies.forEach {
+            val force = calculateForce(it, root)
+            val acc = force.div(it.mass)
+            it.vel.add(acc)
+            it.pos.add(it.vel)
         }
     }
 
